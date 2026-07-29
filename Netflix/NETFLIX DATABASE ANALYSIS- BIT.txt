@@ -1,0 +1,30 @@
+SQL QUERIES - (*ANSWER)
+1)SELECT * FROM "netflix_titles_info" LIMIT 3;
+
+2)SELECT * FROM "netflix_people" LIMIT 3;
+
+3] select count(show_id) from "netflix_titles_info" 
+where type ='Movie';
+
+4] select max(date(date_added))
+ from "netflix_titles_info";
+ 
+ 5] select title from "netflix_titles_info" 
+ order by title;
+ 
+ 6] select info.title
+ , people.director 
+ from "netflix_titles_info" as info
+ inner join "netflix_people" as people
+ on info.show_id= people.show_id
+ where info.title= 'The Starling';
+ 
+7] SELECT title, release_year
+FROM "netflix_titles_info"
+WHERE type = 'Movie'
+AND release_year <=
+(SELECT MIN(release_year)
+FROM "netflix_titles_info"
+WHERE type = ‘Movie');
+
+
