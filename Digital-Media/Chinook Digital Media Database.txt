@@ -1,0 +1,176 @@
+1
+SELECT CustomerId, FirstName, LastName, Country
+FROM chinook.customers
+WHERE Country<> 'USA'
+ORDER BY CustomerId;
+
+
+2.  ## Customers Only from Brazil ##
+
+SELECT * FROM chinook.customers
+WHERE Country= 'Brazil'
+ORDER BY CustomerId;
+
+3.  ## Invoices from the Customers from Brazil ( with full name, invoice Id , invoice date and billing country) ##
+
+SELECT 
+cus.CustomerId, cus.FirstName, cus.LastName,
+inv.InvoiceId, inv.InvoiceDate, inv.BillingCountry
+FROM 
+customers as cus
+INNER JOIN invoices as inv 
+ON
+cus.CustomerId= inv.CustomerId
+WHERE
+ inv.BillingCountry = 'Brazil'
+ORDER BY  inv.InvoiceDate ;
+
+
+4. ## Employees that are any type of sales agent ##
+
+SELECT * FROM chinook.employees
+WHERE  Title LIKE ‘%Sales%Agent%’;
+
+
+5. ##. Find unique/distinct list of countries (billing countries) from the invoices table  ##
+
+SELECT DISTINCT BillingCountry
+FROM chinook.invoices
+ORDER BY BillingCountry;
+
+6. ## Invoices information associated with each sales agent  ##
+
+SELECT emp.EmployeeId, emp.FirstName , emp.LastName,
+inv.CustomerId, inv.InvoiceId
+FROM invoices as inv 
+LEFT JOIN customers  as cus
+ON cus.CustomerId=inv.CustomerId
+LEFT JOIN employees as emp
+ON emp.EmployeeId= cus.SupportRepId
+WHERE emp.Title= 'Sales Support Agent'
+ORDER BY emp.EmployeeId;
+
+7.## Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+
+
+SELECT 
+cus.CustomerId, cus.FirstName, cus.LastName, cus.Country,
+emp.EmployeeId, emp.FirstName as AgentFirstName, emp.LastName as AgentLastName, 
+inv.InvoiceId, inv.Total
+
+FROM customers as cus
+
+LEFT JOIN employees as emp
+ON cus.SupportRepId=emp.EmployeeId
+
+LEFT JOIN invoices as inv
+ON inv.CustomerId=cus.CustomerId
+
+WHERE emp.Title= 'Sales Support Agent'
+ORDER BY cus.CustomerId;
+
+
+8. ### NO of invoices in 2009 ###
+  SELECT COUNT (InvoiceDate) FROM chinook.invoices
+  WHERE InvoiceDate LIKE ‘2009-%-%';
+
+OR
+
+SELECT COUNT(*)
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND ‘2009-12-31';
+
+9. ### Total Sales for 2009 ###
+
+SELECT ROUND(SUM(Total),2) as TotalSales_2009
+FROM chinook.invoices
+WHERE InvoiceDate LIKE '2009-%-%';
+
+OR
+
+SELECT ROUND(SUM(Total),2) as TotalSales_2009
+FROM chinook.invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND ‘2009-12-31';
+
+
+
+
+10.### Purchased track names with each invoice line ID ###
+
+
+SELECT  t.TrackID, t.Name,
+i.InvoicelineId
+FROM chinook.tracks AS t 
+INNER JOIN chinook.invoice_items AS i
+ON  t.TrackId= i.TrackId;
+
+
+11.## Purchased Track names with artists name and invoice line ID ###
+
+SELECT ar.name as Artist, t.Name as Track, i.InvoiceLineId
+FROM chinook.invoice_items AS I
+
+LEFT JOIN chinook.tracks AS t
+ON t.TrackId=i.TrackId
+
+INNER JOIN chinook.albums AS al
+ON al.AlbumId= t.AlbumId
+
+LEFT JOIN chinook.artists as ar
+ON al.ArtistId= ar.ArtistId
+ORDER BY al.ArtistId;
+
+
+12.## All track names with album name, media type and genre    ##
+
+SELECT t.Name AS Track_name,
+a.Title AS Album_name,
+m.Name AS Media_type,
+g.Name AS Genre
+FROM chinook.tracks AS t
+LEFT JOIN chinook.albums AS a
+ON t.AlbumId=a.AlbumId
+LEFT JOIN media_types AS m
+ON t.MediaTypeId= m.MediaTypeId
+LEFT JOIN genres AS g
+ON t.GenreId=g.GenreId
+ORDER BY t.TrackId;
+
+
+
+
+13.##  Total Sales made by each sales person##
+
+SELECT e.EmployeeID, e.FirstName, e.LastName, 
+ROUND(SUM(i.Total),2) AS TotalSales
+
+FROM chinook.employees AS e
+
+INNER JOIN chinook.customers AS c
+ON e.EmployeeId= c.SupportRepId
+
+JOIN invoices AS i
+ON c.CustomerId= i.CustomerId
+
+WHERE e.Title LIKE 'Sales%Agent'
+GROUP BY e.EmployeeId;
+
+
+
+14.## Sales Agent with most dollar sales in 2009 ##
+
+SELECT e.EmployeeID, e.FirstName, e.LastName, 
+ROUND(SUM(i.Total),2) AS TotalSales
+
+FROM chinook.employees AS e
+
+INNER JOIN chinook.customers AS c
+ON e.EmployeeId= c.SupportRepId
+
+JOIN invoices AS i
+ON c.CustomerId= i.CustomerId
+
+WHERE e.Title LIKE 'Sales%Agent'
+AND i.InvoiceDate Like '2009-%-%'
+GROUP BY e.EmployeeId
+ORDER BY TotalSales DESC Limit 1;
