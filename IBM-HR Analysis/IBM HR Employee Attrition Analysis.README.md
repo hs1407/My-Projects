@@ -41,6 +41,15 @@ This may happen because frequent overtime can contribute to:
 - Lower job satisfaction
 - Difficulty managing family or personal responsibilities
 
+
+### Tools Used
+- MySQL
+- Google sheets
+- tableau
+- python
+- pandas
+- plotly
+
 ### Findings
 
 | Overtime Status | Total Employees | Employees Who Left | Attrition Rate |
