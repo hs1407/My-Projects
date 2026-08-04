@@ -1,6 +1,6 @@
 # IBM HR Employee Attrition Analysis
 
-## Project Overview
+## Project Overview (currently working using Python , Plotly)
 
 Employee attrition can increase recruitment costs, disrupt team productivity, and lead to the loss of valuable knowledge. This project analyzes employee data to understand whether overtime and job satisfaction are associated with an employee's decision to leave the company.
 
