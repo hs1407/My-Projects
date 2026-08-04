@@ -78,14 +78,6 @@ Using `TRIM()` also prevents extra spaces from causing valid records to be exclu
 19. What products, units, and revenue were recorded at the selected Seattle address?
 
 
-## Recommended Next Steps
-
-- Combine the January and February tables using `UNION ALL` for month-over-month analysis.
-- Extract city and state from the location field for cleaner geographic comparisons.
-- Calculate average order value at the complete-order level rather than the individual line-item level.
-- Analyze frequently purchased product combinations for cross-selling opportunities.
-- Build a Tableau or Power BI dashboard showing revenue, units sold, top products, locations, and monthly trends.
-
 ## Conclusion
 
 The project demonstrates how SQL can be used to clean transactional data, join customer and sales tables, calculate business metrics, and answer practical questions about customers, products, revenue, locations, and sales activity.
